@@ -15,8 +15,8 @@ def date_range_submit(last_card, headers, start_date_string="2022-07-15", end_da
     end_date = datetime.datetime.strptime(end_date_string, "%Y-%m-%d")
     date_range = (end_date - start_date).days + 1
 
-    last_card['result']['bz'] = ''
-    del last_card['result']['id']
+    last_card['result']['BZ'] = ''
+    del last_card['result']['ID']
 
     for i in range(date_range):
         date_string = (start_date + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
@@ -30,21 +30,21 @@ def date_range_submit(last_card, headers, start_date_string="2022-07-15", end_da
         }
 
         last_card["result"].update({
-            "tbrq": date_string,
-            "tjsj": f"{date_string} 09:05",
-            "bt": date_string + last_card["result"]["bt"][10:]
+            "TBRQ": date_string,
+            "TJSJ": f"{date_string} 09:05",
+            "BT": date_string + last_card["result"]["BT"][10:]
         })
         health_card_data["entity"].update({k.lower(): v for k, v in last_card['result'].items()})
-        submit(json.dumps(health_card_data, ensure_ascii=False), headers)
+        submit(json.dumps(health_card_data, ensure_ascii=False))
         print(f'已提交 {date_string} 健康卡')
 
 
 
 def main():
     parser = argparse.ArgumentParser(description='提交健康卡')
-    parser.add_argument('-s', type=str, required=True, help='提交开始日期: %Y-%m-%d')
-    parser.add_argument('-e', type=str, required=True, help='提交结束日期: %Y-%m-%d')
-    parser.add_argument('-j', type=str, required=True, help='JSESSIONID')
+    parser.add_argument('-s', '--start-date', type=str, required=True, help='提交开始日期: %Y-%m-%d')
+    parser.add_argument('-e', '--end-date', type=str, required=True, help='提交结束日期: %Y-%m-%d')
+    parser.add_argument('-j', '--JSESSIONID', type=str, required=True, help='JSESSIONID')
     args = parser.parse_args()
 
     headers = {
